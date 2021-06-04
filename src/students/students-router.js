@@ -81,7 +81,13 @@ StudentsRouter
     const knexInstance = req.app.get('db');
     const updateStudentId = res.student.id;
     const { first_name, last_name, id, modified, attendance } = req.body;
-    const updatedStudent = { first_name, last_name, id, modified, attendance };
+    console.log(req.body)
+    const updatedStudent = {};
+    if (first_name) updatedStudent.first_name = first_name; 
+    if (last_name) updatedStudent.last_name = last_name;
+    if (id) updatedStudent.id = id;
+    if (modified) updatedStudent.modified = modified;
+    if (attendance) updatedStudent.attendance = attendance;
 
     //check that at least one field is getting updated in order to patch
     const numberOfValues = Object.values(updatedStudent).filter(Boolean).length 
@@ -93,10 +99,10 @@ StudentsRouter
         });
     }
 
-    updatedStudent.date_modified = new Date();
+    updatedStudent.modified = new Date();
 
     StudentsServices.updateStudent(knexInstance, updateStudentId, updatedStudent)
-     .then(() => res.status(204).end())
+     .then(() => res.json(serializeStudent(updatedStudent)))
      .catch(next);
   });
 

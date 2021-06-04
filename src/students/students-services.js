@@ -13,7 +13,6 @@ const StudentsServices = {
          .then(rows => { return rows[0] });
     },
     getStudentById(knex, id){
-        console.log("id", id);
         return knex
          .select('*')
          .from('students')
